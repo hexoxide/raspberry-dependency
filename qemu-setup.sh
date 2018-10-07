@@ -1,0 +1,104 @@
+#!/bin/bash 
+MY_ROOT=`pwd`
+INSTALL_DIR="qemu-rasp"
+MNT_ROOT="root"
+MNT_BOOT="boot"
+
+# List of commands required for execution of the setup script 
+REQUIRE=("fdisk" "qemu-system-aarch64" "git" "wget")
+
+# CentOS raspberry image
+CENTOS_BASE_URL=http://mirror.centos.org/altarch/7/isos/armhfp/
+CENTOS_XZ_IMAGE=CentOS-Userland-7-armv7hl-RaspberryPI-Minimal-1804-sda.raw.xz
+CENTOS_IMAGE=${CENTOS_XZ_IMAGE: : -3}
+
+# Raspbian image
+RASPBIAN_BASE_URL=https://downloads.raspberrypi.org/
+RASPBIAN_ZIP_IMAGE=raspbian_lite_latest
+RASPBIAN_IMAGE=`ls qemu-rasp/ | grep raspbian`
+
+################################
+## Start Function Definitions ##
+################################
+
+function pingGateway() {
+  ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error
+}
+
+function verifyNetwork() {
+  # Attempt to ping the gateway to verify an active network connection
+  if [ $(pingGateway) == error ]; then
+    echo "An active internet connection is required."
+    read -p "Does this machine have an active internet connection: yes[y] / no[n]" yn
+    case $yn in
+      [Dd]* ) INET=true; break;;
+      [Rr]* ) INET=false; break;;
+      * ) echo "Please answer: yes[y] / no[n]";;
+    esac
+  else
+    INET=true
+  fi
+
+  # Halt execution if not connected to the internet
+  if [ ! INET ]; then
+    echo "Can not continue without internet connection."
+    exit 1;
+  fi
+}
+
+##############################
+## end Function Definitions ##
+##############################
+
+# verify existence of requirements
+echo "verifying requirements..."; 
+for i in "${REQUIRE[@]}" 
+  do if hash $i 2>/dev/null; then
+    echo >&2 "Found ${i}";
+  else
+    echo >&2 "Could not find: ${i} , is not installed.";
+    exit 1;
+  fi
+done
+
+# Create install directory if not exists
+if [ ! -d "$MY_ROOT/$INSTALL_DIR" ]; then
+  mkdir $INSTALL_DIR
+  mkdir $INSTALL_DIR/$MNT_ROOT
+  mkdir $INSTALL_DIR/$MNT_BOOT
+fi
+
+cd $INSTALL_DIR
+
+# download and extract centos image
+if [ ! -f "$MY_ROOT/$INSTALL_DIR/$CENTOS_IMAGE" ]; then
+  verifyNetwork
+  wget $CENTOS_BASE_URL$CENTOS_XZ_IMAGE
+  unxz $CENTOS_XZ_IMAGE
+fi
+
+# download and extract raspbian image
+if [ ! -f "$MY_ROOT/$INSTALL_DIR/$RASPBIAN_IMAGE" ]; then
+  verifyNetwork
+  wget $RASPBIAN_BASE_URL$RASPBIAN_ZIP_IMAGE
+  unzip $RASPBIAN_ZIP_IMAGE
+  rm $RASPBIAN_ZIP_IMAGE
+fi
+
+# retrieve image information
+RAW_INFO=`fdisk -l $RASPBIAN_IMAGE`
+
+# Determine size of sectors in image file
+RAW_SECTOR_INFO=`echo $"$RAW_INFO" | grep -E "Sector size[^%]*bytes \/ " | cut -d '/' -f 3`
+SECTOR_SIZE=${RAW_SECTOR_INFO: 1 : -6}
+echo "Determined Raspbian image sector size to be: $SECTOR_SIZE bytes"
+
+# Determine start point of
+SECTOR_START=`echo $"$RAW_INFO" | grep "c W95" | cut -d ' ' -f 9`
+echo "Determined Raspbian image root partition to start at sector $SECTOR_START"
+
+# Compute the root partition offset
+let "BOOT_OFFSET=$SECTOR_SIZE * $SECTOR_START"
+echo "Determined Raspbian image boot partition offset to be: $BOOT_OFFSET"
+
+sudo mount -v -o offset=BOOT_OFFSET -t vfat $RASPBIAN_IMAGE boot/
