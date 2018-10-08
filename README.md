@@ -3,25 +3,25 @@ Automatic dependency installation and management for the raspberry pi 3 B+. This
 
 The following tools will be installed by using this tool.
   
-| Library/Tool | Version    |
-|--------------|------------|
-| FairMQ       | 1.1.5      |
-| ZeroMQ       | 4.2.1      |
-| Zookeeper    | 3.4.9      |
-| Cmake        | 3.11.0     |
-| Boost        | 1.66.0     |
-| Yaml-cpp     | 0.5.2      |
-| Compiler     | gcc 6.3.0  |
+| Library/Tool                                            | Version    |
+|---------------------------------------------------------|------------|
+| [FairMQ](https://github.com/FairRootGroup/FairMQ)       | 1.1.5      |
+| [ZeroMQ](https://github.com/zeromq/libzmq)              | 4.2.1      |
+| [Zookeeper](https://zookeeper.apache.org/)              | 3.4.9      |
+| [Cmake](https://github.com/Kitware/CMake)               | 3.11.0     |
+| [Boost](https://www.boost.org/)                         | 1.66.0     |
+| [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          | 0.5.2      |
+| [Compiler](https://gcc.gnu.org/)                        | gcc 6.3.0  |
 
 ## Index
 
-1. [Requirements]()
-2. [Emulating raspberry-pi hardware]()
-3. [References]()
-4. [Glossary]()
+1. [Requirements](#1-requirements)
+2. [Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware)
+3. [References](#3-references)
+4. [Glossary](#4-glossary)
 
 ## 1. Requirements
-A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware]().
+A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware).
 
 
 * Raspberry-pi 3 B+ (alteratively see 2.)
