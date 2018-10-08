@@ -2,7 +2,8 @@
 MY_ROOT=`pwd`
 INSTALL_DIR="qemu-rasp"
 MNT_ROOT="root"
-MNT_BOOT="boot"
+MNT_BOOT_RASP="bootr"
+MNT_BOOT_CENT="bootc"
 
 # List of commands required for execution of the setup script 
 REQUIRE=("fdisk" "qemu-system-aarch64" "git" "wget")
@@ -61,11 +62,12 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
-# Create install directory if not exists
-if [ ! -d "$MY_ROOT/$INSTALL_DIR" ]; then
-  mkdir $INSTALL_DIR
-  mkdir $INSTALL_DIR/$MNT_ROOT
-  mkdir $INSTALL_DIR/$MNT_BOOT
+# Create install directories if not exists
+if [ ! -d "$MY_ROOT/$INSTALL_DIR/$MNT_BOOT_RASP" ]; then
+  mkdir $INSTALL_DIR/$MNT_BOOT_RASP
+fi
+if [ ! -d "$MY_ROOT/$INSTALL_DIR/$MNT_BOOT_CENT" ]; then
+  mkdir $INSTALL_DIR/$MNT_BOOT_CENT
 fi
 
 cd $INSTALL_DIR
@@ -94,11 +96,29 @@ SECTOR_SIZE=${RAW_SECTOR_INFO: 1 : -6}
 echo "Determined Raspbian image sector size to be: $SECTOR_SIZE bytes"
 
 # Determine start point of
-SECTOR_START=`echo $"$RAW_INFO" | grep "c W95" | cut -d ' ' -f 9`
+SECTOR_START=`echo $"$RAW_INFO" | grep "c W95" | cut -d ' ' -f 8`
 echo "Determined Raspbian image root partition to start at sector $SECTOR_START"
 
 # Compute the root partition offset
 let "BOOT_OFFSET=$SECTOR_SIZE * $SECTOR_START"
 echo "Determined Raspbian image boot partition offset to be: $BOOT_OFFSET"
 
-sudo mount -v -o offset=BOOT_OFFSET -t vfat $RASPBIAN_IMAGE boot/
+sudo mount -v -o offset=$BOOT_OFFSET -t vfat $RASPBIAN_IMAGE bootr/
+
+# retrieve image information
+RAW_INFO=`fdisk -l $CENTOS_IMAGE`
+
+# Determine size of sectors in image file
+RAW_SECTOR_INFO=`echo $"$RAW_INFO" | grep -E "Sector size[^%]*bytes \/ " | cut -d '/' -f 3`
+SECTOR_SIZE=${RAW_SECTOR_INFO: 1 : -6}
+echo "Determined CentOS image sector size to be: $SECTOR_SIZE bytes"
+
+# Determine start point of
+SECTOR_START=`echo $"$RAW_INFO" | grep "c W95" | cut -d ' ' -f 9`
+echo "Determined CentOS image root partition to start at sector $SECTOR_START"
+
+# Compute the root partition offset
+let "BOOT_OFFSET=$SECTOR_SIZE * $SECTOR_START"
+echo "Determined CentOS image boot partition offset to be: $BOOT_OFFSET"
+
+sudo mount -v -o offset=$BOOT_OFFSET -t vfat $CENTOS_IMAGE bootc/

@@ -1,1 +1,4 @@
 qemu-rasp/*
+!qemu-rasp/kernel8.img
+!qemu-rasp/bcm2837*.dts
+!qemu-rasp/bcm2837*.dtb
