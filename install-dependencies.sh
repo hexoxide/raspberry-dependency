@@ -2,7 +2,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget")
+REQUIRE=("git" "wget" "gcc" "g++")
 
 ################################
 ## Start Function Definitions ##
@@ -52,3 +52,7 @@ cd $ROOT
 
 # Update all the submodules their submodules
 git submodule update --init --recursive
+
+# Compile and install cmake
+cd cmake
+./bootstrap
