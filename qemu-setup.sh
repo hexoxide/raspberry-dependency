@@ -1,5 +1,5 @@
 #!/bin/bash 
-MY_ROOT=`pwd`
+MY_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 INSTALL_DIR="qemu-rasp"
 MNT_ROOT="root"
 MNT_BOOT_RASP="bootr"

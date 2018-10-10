@@ -1,0 +1,18 @@
+[submodule "FairMQ"]
+	path = FairMQ
+	url = https://github.com/FairRootGroup/FairMQ.git
+[submodule "libzmq"]
+	path = libzmq
+	url = https://github.com/zeromq/libzmq.git
+[submodule "zookeeper"]
+	path = zookeeper
+	url = https://github.com/apache/zookeeper.git
+[submodule "cmake"]
+	path = cmake
+	url = https://github.com/Kitware/CMake.git
+[submodule "boost"]
+	path = boost
+	url = https://github.com/boostorg/boost.git
+[submodule "yaml-cpp"]
+	path = yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
