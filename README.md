@@ -27,7 +27,7 @@ A raspberry-pi model 3 B+ is required with the appropriate operating system imag
 
 ```
 pacman -Syu
-pacman -S gcc git wget htop make icu
+pacman -S gcc git wget htop make icu base-devel python
 ```
 
 * Raspberry-pi 3 B+ (alteratively see 2.)
@@ -38,7 +38,6 @@ pacman -S gcc git wget htop make icu
 
 An environment as similar as possible to the one used at CERN is desired, however, it has proven unfeasible to use CentOS due to the limitations the Raspberry pi version has. One of the main reasons is the inability to switch of gcc version, normally a tool called `scl` provides the switching of specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost specified in many of the previous experiments, furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
 
-* CentOS 
 
 ## 2. Emulating raspberry-pi hardware
 

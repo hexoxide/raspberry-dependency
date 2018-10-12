@@ -19,7 +19,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++" "make")
+REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "")
 
 ################################
 ## Start Function Definitions ##
@@ -65,6 +65,12 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
+# Determine if necessary symlink exists because boost is incapable of directly detecting python path 
+# even though it so heavily advertises it can automatically find it.
+
+sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
+
+
 cd "$ROOT"
 
 # Update all the submodules their submodules
@@ -80,3 +86,5 @@ make install
 cd "$ROOT/boost"
 ./bootstrap.sh --prefix=/usr/local
 sudo ./b2 install
+sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
+sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
