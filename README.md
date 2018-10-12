@@ -13,6 +13,8 @@ The following tools will be installed by using this tool.
 | [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          | 0.5.2      |
 | [Compiler](https://gcc.gnu.org/)                        | gcc 6.3.0  |
 
+_*Version differs from specification as defined in Mitch Puls his paper._
+
 ## Index
 
 1. [Requirements](#1-requirements)
@@ -23,10 +25,20 @@ The following tools will be installed by using this tool.
 ## 1. Requirements
 A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware).
 
+```
+pacman -Syu
+pacman -S gcc git wget htop make icu
+```
 
 * Raspberry-pi 3 B+ (alteratively see 2.)
 * 16GB MicroSD card
-* CentOS 7.0 i386 raspberry-pi image
+* Manjaro ARM 17
+
+### 1.1 Reasons for choosing Manjaro as Linux distribution
+
+An environment as similar as possible to the one used at CERN is desired, however, it has proven unfeasible to use CentOS due to the limitations the Raspberry pi version has. One of the main reasons is the inability to switch of gcc version, normally a tool called `scl` provides the switching of specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost specified in many of the previous experiments, furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
+
+* CentOS 
 
 ## 2. Emulating raspberry-pi hardware
 

@@ -1,8 +1,25 @@
-#!/bin/bash 
+#!/bin/bash
+
+#     Raspberry Dependencies installation and management for 02 software experiments.
+#     Copyright (C) 2018 Amsterdam University of Applied Sciences.
+
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     You should have received a copy of the GNU General Public License
+#     along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++")
+REQUIRE=("git" "wget" "gcc" "g++" "make")
 
 ################################
 ## Start Function Definitions ##
@@ -48,11 +65,18 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
-cd $ROOT
+cd "$ROOT"
 
 # Update all the submodules their submodules
 git submodule update --init --recursive
 
 # Compile and install cmake
-cd cmake
+cd "$ROOT/cmake"
 ./bootstrap
+make -j 4
+make install
+
+# Compile and install boost
+cd "$ROOT/boost"
+./bootstrap.sh --prefix=/usr/local
+sudo ./b2 install
