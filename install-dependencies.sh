@@ -74,9 +74,23 @@ git submodule update --init --recursive
 cd "$ROOT/cmake"
 ./bootstrap
 make -j 4
-make install
+sudo make install
 
 # Compile and install boost
 cd "$ROOT/boost"
 ./bootstrap.sh --prefix=/usr/local
 sudo ./b2 install
+
+# Compile and install yaml-cpp
+cd "$ROOT/yaml-cpp"
+cmake ./
+make -j 4
+sudo make install
+
+# Compile and install yaml-cpp
+cd "$ROOT/libzmq"
+if [ -d "build" ]; then mdkir build; fi
+cd build
+cmake ./
+make -j 4
+sudo make install

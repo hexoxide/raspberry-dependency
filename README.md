@@ -36,9 +36,7 @@ pacman -S gcc git wget htop make icu
 
 ### 1.1 Reasons for choosing Manjaro as Linux distribution
 
-An environment as similar as possible to the one used at CERN is desired, however, it has proven unfeasible to use CentOS due to the limitations the Raspberry pi version has. One of the main reasons is the inability to switch of gcc version, normally a tool called `scl` provides the switching of specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost specified in many of the previous experiments, furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
-
-* CentOS 
+An environment as similar as possible to the one used at CERN is desired, however, it has been proven to be unfeasible to use CentOS. This is due to the limitations the Raspberry pi version has in comparison to the CentOS x86_64 image. One of the main reasons is the inability to switch of gcc version, normally, a tool called `scl` provides the switching for specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. Furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
 
 ## 2. Emulating raspberry-pi hardware
 
