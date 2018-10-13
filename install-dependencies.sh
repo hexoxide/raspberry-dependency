@@ -19,7 +19,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++" "make")
+REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "")
 
 ################################
 ## Start Function Definitions ##
@@ -65,6 +65,9 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
+# Determine if necessary symlink exists because boost is incorrectly detects python path on Manjaro.
+sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
+
 cd "$ROOT"
 
 # Update all the submodules their submodules
@@ -81,16 +84,37 @@ cd "$ROOT/boost"
 ./bootstrap.sh --prefix=/usr/local
 sudo ./b2 install
 
+sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
+sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
+sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
+sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
+sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
+sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
+sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
+sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
+sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
+sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
+sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
+sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
+
 # Compile and install yaml-cpp
 cd "$ROOT/yaml-cpp"
+if [ -d "build" ]; then
+  mdkir build; 
+fi
+cd build
 cmake ./
 make -j 4
 sudo make install
 
 # Compile and install yaml-cpp
 cd "$ROOT/libzmq"
-if [ -d "build" ]; then mdkir build; fi
+if [ -d "build" ]; then
+  mdkir build; 
+fi
 cd build
 cmake ./
 make -j 4
 sudo make install
+
+

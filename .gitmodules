@@ -16,3 +16,6 @@
 [submodule "yaml-cpp"]
 	path = yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "FairLogger"]
+	path = FairLogger
+	url = https://github.com/FairRootGroup/FairLogger.git
