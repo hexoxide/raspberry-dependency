@@ -27,8 +27,12 @@ _*Version differs from specification as defined in Mitch Puls his paper._
 A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware).
 
 ```
+sudo -s
+pacman-mirrors -g
+pacman -Sy archlinux-keyring manjaro-keyring
+pacman-key --refresh-key
 pacman -Syu
-pacman -S gcc git wget htop make icu base-devel python
+pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit
 ```
 
 * Raspberry-pi 3 B+ (alteratively see 2.)

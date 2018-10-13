@@ -16,10 +16,11 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+# Determine absolute path of this file regardless of path from which the file is executed
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "")
+REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo")
 
 ################################
 ## Start Function Definitions ##
@@ -107,7 +108,7 @@ cmake ./
 make -j 4
 sudo make install
 
-# Compile and install yaml-cpp
+# Compile and install libzmq
 cd "$ROOT/libzmq"
 if [ -d "build" ]; then
   mdkir build; 
@@ -117,4 +118,26 @@ cmake ./
 make -j 4
 sudo make install
 
+# Compile and install FairLogger
+cd "$ROOT/FairLogger"
+if [ -d "build" ]; then
+  mdkir build; 
+fi
+cd build
+cmake ./
+make -j 4
+sudo make install
 
+# Compile and install FairMQ
+cd "$ROOT/FairMQ"
+if [ -d "build" ]; then
+  mdkir build; 
+fi
+cd build
+cmake ./
+make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
+sudo make install
+
+# Compile and install ZooKeeper
+cd "$ROOT/zooekeeper"
+ant deb
