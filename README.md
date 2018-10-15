@@ -19,23 +19,14 @@ _*Version differs from specification as defined in Mitch Puls his paper._
 ## Index
 
 1. [Requirements](#1-requirements)
-2. [Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware)
-3. [References](#3-references)
-4. [Glossary](#4-glossary)
+2. [Emulating raspberry-pi hardware](#3-emulating-raspberry-pi-hardware)
+3. [References](#4-references)
+4. [Glossary](#5-glossary)
 
 ## 1. Requirements
-A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#2-emulating-raspberry-pi-hardware).
+A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#3-emulating-raspberry-pi-hardware).
 
-```
-sudo -s
-pacman-mirrors -g
-pacman -Sy archlinux-keyring manjaro-keyring
-pacman-key --refresh-key
-pacman -Syu
-pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit
-```
-
-* Raspberry-pi 3 B+ (alteratively see 2.)
+* Raspberry-pi 3 B+ (alternatively see 2.)
 * 16GB MicroSD card
 * Manjaro ARM 17
 
@@ -43,23 +34,39 @@ pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit
 
 An environment as similar as possible to the one used at CERN is desired, however, it has proven to be unfeasible to use CentOS. This is due to the limitations the Raspberry pi version has in comparison to the CentOS x86_64 image. One of the main reasons is the inability to switch of gcc version, normally, a tool called `scl` provides the switching for specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. Furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
 
-## 2. Emulating raspberry-pi hardware
+## 2. Setup 
+
+After setting up a fresh image of manjaro-17 a few commands need to be executed to install necessary dependencies.
+
+```
+sudo -s
+pacman -Syu
+pacman-mirrors -g
+pacman -Sy archlinux-keyring manjaro-keyring
+pacman-key --refresh-key
+pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit
+exit
+```
+
+Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. Execute the code below to set a unique hostname for the node(Change the HOSTNAME value).
+
+```
+HOSTNAME="manjaro-arm-1"
+su root
+echo "$HOSTNAME" > /etc/hostname
+echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
+```
+
+## 3. Emulating raspberry-pi hardware
 
 `qemu-system-aarch64 -M raspi3 -m 1024 -kernel kernel8.img -dtb bcm2837-rpi-3-b.dtb -serial stdio -drive file=qemu-rasp/2018-06-27-raspbian-stretch-lite.img,format=raw,if=sd -append "console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait"`
 
-## 3. References
+## 4. References
 
 1. [Emulate raspberry-pi with QEMU](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/)
 2. [CentOS AltArch Raspberry pi 3 documentation](https://wiki.centos.org/SpecialInterestGroup/AltArch/Arm32/RaspberryPi3)
 3. [Compiling the Linux kernel for raspberry pi 3](https://devsidestory.com/build-a-64-bit-kernel-for-your-raspberry-pi-3/)
 
-## 4. Glossary
+## 5. Glossary
 
-@TODO: Create global gloassary as single point of reference for entirety of documentation instead of having to copy a table around everywhere and anywhere.
-
-| Name  | Abbreviation  | Meaning |
-|-------|---------------|---------|
-| CERN  |               |         |
-| ALICE |               |         |
-| LS2   |               |         |
-| QEMU  |               |         |
+[Online glossary](https://github.com/hexoxide/documentation/blob/master/glossary.md)

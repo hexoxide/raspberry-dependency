@@ -101,43 +101,43 @@ sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
 # Compile and install yaml-cpp
 cd "$ROOT/yaml-cpp"
 if [ -d "build" ]; then
-  mdkir build; 
+  mkdir build
 fi
 cd build
-cmake ./
+cmake ../
 make -j 4
 sudo make install
 
 # Compile and install libzmq
 cd "$ROOT/libzmq"
 if [ -d "build" ]; then
-  mdkir build; 
+  mkdir build
 fi
 cd build
-cmake ./
+cmake ../
 make -j 4
 sudo make install
 
 # Compile and install FairLogger
 cd "$ROOT/FairLogger"
 if [ -d "build" ]; then
-  mdkir build; 
+  mkdir build
 fi
 cd build
-cmake ./
+cmake ../
 make -j 4
 sudo make install
 
 # Compile and install FairMQ
 cd "$ROOT/FairMQ"
 if [ -d "build" ]; then
-  mdkir build; 
+  mkdir build
 fi
 cd build
-cmake ./
+cmake -DBUILD_TESTING=0 ../
 make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
 sudo make install
 
 # Compile and install ZooKeeper
-cd "$ROOT/zooekeeper"
+cd "$ROOT/zookeeper"
 ant deb
