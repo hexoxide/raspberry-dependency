@@ -27,17 +27,17 @@ REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" 
 ################################
 
 function pingGateway() {
-  ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error
+  ping -q -w 1 -c 1 "$(ip r | grep default | cut -d ' ' -f 3)" > /dev/null && echo ok || echo error
 }
 
 function verifyNetwork() {
   # Attempt to ping the gateway to verify an active network connection
-  if [ $(pingGateway) == error ]; then
+  if [ "$(pingGateway)" == error ]; then
     echo "An active internet connection is required."
     read -p "Does this machine have an active internet connection: yes[y] / no[n]" yn
     case $yn in
-      [Dd]* ) INET=true; break;;
-      [Rr]* ) INET=false; break;;
+      [Dd]* ) INET=true; return;;
+      [Rr]* ) INET=false; return;;
       * ) echo "Please answer: yes[y] / no[n]";;
     esac
   else
@@ -45,7 +45,7 @@ function verifyNetwork() {
   fi
 
   # Halt execution if not connected to the internet
-  if [ ! INET ]; then
+  if [ ! $INET ]; then
     echo "Can not continue without internet connection."
     exit 1;
   fi
@@ -58,7 +58,7 @@ function verifyNetwork() {
 # verify existence of requirements
 echo "verifying requirements..."; 
 for i in "${REQUIRE[@]}" 
-  do if hash $i 2>/dev/null; then
+  do if hash "$i" 2>/dev/null; then
     echo >&2 "Found ${i}";
   else
     echo >&2 "Could not find: ${i} , is not installed.";
@@ -74,19 +74,21 @@ if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
   sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
 fi
 
-cd "$ROOT"
+cd "$ROOT" || exit
 
 # Update all the submodules their submodules
-git submodule update --init --recursive
+if [ "$TRAVIS" != "true" ]; then
+  git submodule update --init --recursive
+fi
 
 # Compile and install cmake
-cd "$ROOT/cmake"
+cd "$ROOT/cmake" || exit
 ./bootstrap
 make -j 4
 sudo make install
 
 # Compile and install boost
-cd "$ROOT/boost"
+cd "$ROOT/boost" || exit
 ./bootstrap.sh --prefix=/usr/local
 sudo ./b2 install
 
@@ -104,45 +106,45 @@ sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
 sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
 
 # Compile and install yaml-cpp
-cd "$ROOT/yaml-cpp"
+cd "$ROOT/yaml-cpp" || exit
 if [ -d "build" ]; then
   mkdir build
 fi
-cd build
+cd build || exit
 cmake ../
 make -j 4
 sudo make install
 
 # Compile and install libzmq
-cd "$ROOT/libzmq"
+cd "$ROOT/libzmq" || exit
 if [ -d "build" ]; then
   mkdir build
 fi
-cd build
+cd build || exit
 cmake ../
 make -j 4
 sudo make install
 
 # Compile and install FairLogger
-cd "$ROOT/FairLogger"
+cd "$ROOT/FairLogger" || exit
 if [ -d "build" ]; then
   mkdir build
 fi
-cd build
+cd build || exit
 cmake ../
 make -j 4
 sudo make install
 
 # Compile and install FairMQ
-cd "$ROOT/FairMQ"
+cd "$ROOT/FairMQ" || exit
 if [ -d "build" ]; then
   mkdir build
 fi
-cd build
+cd build || exit
 cmake -DBUILD_TESTING=0 ../
 make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
 sudo make install
 
 # Compile and install ZooKeeper
-cd "$ROOT/zookeeper"
+cd "$ROOT/zookeeper" || exit
 ant deb

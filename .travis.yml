@@ -2,6 +2,10 @@ language: generic
 
 sudo: required
 
+env:
+  global:
+    - TRAVIS=true
+
 addons:
   apt:
     packages:
