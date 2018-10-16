@@ -77,7 +77,8 @@ fi
 cd "$ROOT" || exit
 
 # Update all the submodules their submodules
-if [ "$TRAVIS" != "true" ]; then
+if [ ! "$TRAVIS" ]; then
+  Echo "Updating submodules."
   git submodule update --init --recursive
 fi
 
