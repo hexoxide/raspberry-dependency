@@ -66,8 +66,11 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
+echo "Full path was determined to be: $ROOT"
+
 # Determine if necessary symlink exists because boost is incorrectly detects python path on Manjaro
 if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
+  echo "Symlinking python to prevent boost error when building"
   sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
 fi
 
