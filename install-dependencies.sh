@@ -20,7 +20,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo")
+REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" "hash" "dirname" "pwd" "ln" "cp")
 
 ################################
 ## Start Function Definitions ##
@@ -66,8 +66,10 @@ for i in "${REQUIRE[@]}"
   fi
 done
 
-# Determine if necessary symlink exists because boost is incorrectly detects python path on Manjaro.
-sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
+# Determine if necessary symlink exists because boost is incorrectly detects python path on Manjaro
+if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
+  sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
+fi
 
 cd "$ROOT"
 
