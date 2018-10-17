@@ -40,6 +40,8 @@ function verifyNetwork() {
       [Nn]* ) ;;
       * ) echo "Please answer: yes[y] / no[n]";;
     esac
+  else
+    INET=true
   fi
 
   # Halt execution if not connected to the internet
@@ -71,6 +73,8 @@ if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
   echo "Symlinking python to prevent boost error when building"
   sudo ln -s /usr/include/python3.7m/ /usr/include/python3.7
 fi
+
+verifyNetwork
 
 cd "$ROOT" || exit
 

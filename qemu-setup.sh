@@ -32,7 +32,6 @@ CENTOS_IMAGE=${CENTOS_XZ_IMAGE: : -3}
 # Raspbian image
 RASPBIAN_BASE_URL=https://downloads.raspberrypi.org/
 RASPBIAN_ZIP_IMAGE=raspbian_lite_latest
-RASPBIAN_IMAGE=$(ls qemu-rasp/*raspbian*)
 
 ################################
 ## Start Function Definitions ##
@@ -52,6 +51,8 @@ function verifyNetwork() {
       [Nn]* ) ;;
       * ) echo "Please answer: yes[y] / no[n]";;
     esac
+  else
+    INET=true
   fi
 
   # Halt execution if not connected to the internet
@@ -85,6 +86,8 @@ if [ ! -d "$MY_ROOT/$INSTALL_DIR/$MNT_BOOT_CENT" ]; then
 fi
 
 cd "$INSTALL_DIR" || exit
+
+RASPBIAN_IMAGE="$(echo ./*raspbian*)"
 
 # download and extract centos image
 if [ ! -f "$MY_ROOT/$INSTALL_DIR/$CENTOS_IMAGE" ]; then

@@ -11,6 +11,7 @@ addons:
       - libelf-dev
       - libdw-dev
       - cmake
+      - qemu-system-arm
 script:
   - bash -c 'shopt -s globstar; shellcheck *.sh'
 after_success: |
