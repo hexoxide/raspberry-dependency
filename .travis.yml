@@ -13,7 +13,8 @@ addons:
       - libelf-dev
       - libdw-dev
       - cmake
-
+script:
+  - bash -c 'shopt -s globstar; shellcheck **/*.{sh,ksh,bash}'
 after_success: |
   wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
   tar xzf master.tar.gz &&
@@ -26,6 +27,6 @@ after_success: |
   cd ../.. &&
   rm -rf kcov-master &&
   mkdir -p coverage &&
-  kcov coverage install-dependencies.sh &&
-  bash <(curl -s https://codecov.io/bash)
+  #kcov coverage install-dependencies.sh &&
+  #bash <(curl -s https://codecov.io/bash)
 
