@@ -5,6 +5,7 @@ sudo: required
 env:
   global:
     - TRAVIS=true
+    - CODECOV_TOKEN="cb217982-9953-497d-bae4-2f183caf4385"
 
 addons:
   apt:
@@ -27,6 +28,6 @@ after_success: |
   cd ../.. &&
   rm -rf kcov-master &&
   mkdir -p coverage &&
-  kcov coverage qemu-setup.sh &&
+  kcov coverage install-dependencies.sh &&
   bash <(curl -s https://codecov.io/bash)
 
