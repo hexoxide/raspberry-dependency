@@ -144,10 +144,19 @@ if [ -d "build" ]; then
   mkdir build
 fi
 cd build || exit
-cmake -DBUILD_TESTING=0 ../
+cmake -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
 make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
 sudo make install
 
 # Compile and install ZooKeeper
-cd "$ROOT/zookeeper" || exit
-ant deb
+cd "$ROOT/zookeeper-arch" || exit
+makepkg -Acs
+PACKAGE="$(echo ./*.pkg.tar.xz)"
+sudo pacman -U "$PACKAGE"
+
+# Compile and install ZooKeeper c bindings
+cd "$ROOT/zookeeper/src/c" || exit
+export CFLAGS="-Wno-error" # Don't worry about it~ just a bug in GCC 8.2
+./configure
+make -j 2
+make install

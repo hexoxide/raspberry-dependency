@@ -19,3 +19,6 @@
 [submodule "FairLogger"]
 	path = FairLogger
 	url = https://github.com/FairRootGroup/FairLogger.git
+[submodule "zookeeper-arch"]
+	path = zookeeper-arch
+	url = https://aur.archlinux.org/zookeeper.git
