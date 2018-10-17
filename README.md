@@ -46,7 +46,7 @@ pacman -Syu
 pacman-mirrors -g
 pacman -Sy archlinux-keyring manjaro-keyring
 pacman-key --refresh-key
-pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit
+pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit doxygen
 exit
 ```
 

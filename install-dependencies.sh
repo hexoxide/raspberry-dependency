@@ -20,7 +20,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" "hash" "dirname" "pwd" "ln" "cp")
+REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" "hash" "dirname" "pwd" "ln" "cp" "doxygen")
 
 ################################
 ## Start Function Definitions ##
