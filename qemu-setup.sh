@@ -47,7 +47,7 @@ function pingGateway() {
 
 function verifyNetwork() {
   # Attempt to ping the gateway to verify an active network connection
-  if [ "$(pingGateway)" == error ] && [ ! $TRAVIS ]; then
+  if [ "$(pingGateway)" == error ] && [ ! "$TRAVIS" ]; then
     echo "An active internet connection is required."
     read -r -p "Does this machine have an active internet connection: yes[y] / no[n]" yn
     case $yn in
