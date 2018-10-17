@@ -46,14 +46,12 @@ function verifyNetwork() {
   # Attempt to ping the gateway to verify an active network connection
   if [ "$(pingGateway)" == error ]; then
     echo "An active internet connection is required."
-    read -p "Does this machine have an active internet connection: yes[y] / no[n]" yn
+    read -r -p "Does this machine have an active internet connection: yes[y] / no[n]" yn
     case $yn in
-      [Dd]* ) INET=true; return;;
-      [Rr]* ) INET=false; return;;
+      [Yy]* ) INET=true;;
+      [Nn]* ) ;;
       * ) echo "Please answer: yes[y] / no[n]";;
     esac
-  else
-    INET=true
   fi
 
   # Halt execution if not connected to the internet
@@ -77,8 +75,6 @@ for i in "${REQUIRE[@]}"
     exit 1;
   fi
 done
-
-verifyNetwork
 
 # Create install directories if not exists
 if [ ! -d "$MY_ROOT/$INSTALL_DIR/$MNT_BOOT_RASP" ]; then
