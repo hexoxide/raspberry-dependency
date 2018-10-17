@@ -22,7 +22,11 @@ MNT_BOOT_RASP="bootr"
 MNT_BOOT_CENT="bootc"
 
 # List of commands required for execution of the setup script 
-REQUIRE=("fdisk" "qemu-system-aarch64" "git" "wget")
+if [ $TRAVIS ]; then
+  REQUIRE=("fdisk" "qemu-system-aarch64" "git" "wget")
+else
+  REQUIRE=("fdisk" "git" "wget")
+fi
 
 # CentOS raspberry image
 CENTOS_BASE_URL=http://mirror.centos.org/altarch/7/isos/armhfp/
