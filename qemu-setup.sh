@@ -22,7 +22,7 @@ MNT_BOOT_RASP="bootr"
 MNT_BOOT_CENT="bootc"
 
 # List of commands required for execution of the setup script 
-if [ "$TRAVIS" ]; then
+if [ ! "$TRAVIS" ]; then
   REQUIRE=("fdisk" "qemu-system-aarch64" "git" "wget")
 else
   REQUIRE=("fdisk" "git" "wget")
