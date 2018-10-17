@@ -14,7 +14,7 @@ addons:
       - libdw-dev
       - cmake
 script:
-  - bash -c 'shopt -s globstar; shellcheck **/*.{sh,ksh,bash}'
+  - bash -c 'shopt -s globstar; shellcheck *.sh'
 after_success: |
   wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
   tar xzf master.tar.gz &&
