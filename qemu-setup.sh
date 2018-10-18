@@ -106,8 +106,10 @@ if [ ! -f "$MY_ROOT/$INSTALL_DIR/$RASPBIAN_IMAGE" ]; then
   wget $RASPBIAN_BASE_URL$RASPBIAN_ZIP_IMAGE
   unzip $RASPBIAN_ZIP_IMAGE
   rm $RASPBIAN_ZIP_IMAGE
-fi
+fi 
 
+# Update reference to image
+RASPBIAN_IMAGE="$(echo ./*raspbian*)"
 # retrieve image information
 RAW_INFO="$(fdisk -l "$RASPBIAN_IMAGE")"
 
