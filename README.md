@@ -21,9 +21,11 @@ _*Version differs from specification as defined in Mitch Puls his paper._
 ## Index
 
 1. [Requirements](#1-requirements)
-2. [Emulating raspberry-pi hardware](#3-emulating-raspberry-pi-hardware)
-3. [References](#4-references)
-4. [Glossary](#5-glossary)
+2. [Setup](#2-setup)
+3. [Emulating raspberry-pi hardware](#3-emulating-raspberry-pi-hardware)
+4. [Testing](#4-testing)
+5. [References](#5-references)
+6. [Glossary](#6-glossary)
 
 ## 1. Requirements
 A raspberry-pi model 3 B+ is required with the appropriate operating system image installed on the inserted MicroSD card. A MicroSD card of at least 16GB in size is highly recommended. Alternatively the raspberry-pi can be emulated using QEMU, please see [2. Emulating raspberry-pi hardware](#3-emulating-raspberry-pi-hardware).
@@ -53,8 +55,8 @@ exit
 Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. Execute the code below to set a unique hostname for the node(Change the HOSTNAME value).
 
 ```
-HOSTNAME="manjaro-arm-1"
 su root
+HOSTNAME="manjaro-arm-1"
 echo "$HOSTNAME" > /etc/hostname
 echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
 ```
@@ -63,12 +65,16 @@ echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
 
 `qemu-system-aarch64 -M raspi3 -m 1024 -kernel kernel8.img -dtb bcm2837-rpi-3-b.dtb -serial stdio -drive file=qemu-rasp/2018-06-27-raspbian-stretch-lite.img,format=raw,if=sd -append "console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait"`
 
-## 4. References
+## 4. Testing
+
+Automated testing is done using Travis and shellcheck. Shellcheck is a linting tool for various types of shell scripts, therefor any passed shell scripts are guaranteed to be portable to other architectures and operating systems. For more details please see [Travis configuration](.travis.tml)
+
+## 5. References
 
 1. [Emulate raspberry-pi with QEMU](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/)
 2. [CentOS AltArch Raspberry pi 3 documentation](https://wiki.centos.org/SpecialInterestGroup/AltArch/Arm32/RaspberryPi3)
 3. [Compiling the Linux kernel for raspberry pi 3](https://devsidestory.com/build-a-64-bit-kernel-for-your-raspberry-pi-3/)
 
-## 5. Glossary
+## 6. Glossary
 
 [Online glossary](https://github.com/hexoxide/documentation/blob/master/glossary.md)

@@ -78,6 +78,12 @@ verifyNetwork
 
 cd "$ROOT" || exit
 
+# Copy cppunit.m4 into aclocal folder if it does not already exist
+# this file is required by zookeeper.
+if [ -f /usr/share/aclocal/cppunit.m4 ]; then
+  sudo cp cppunit.m4 /usr/share/aclocal/
+fi
+
 # Update all the submodules their submodules
 if [ ! "$TRAVIS" ]; then
   echo "Updating submodules."
@@ -157,6 +163,11 @@ sudo pacman -U "$PACKAGE"
 # Compile and install ZooKeeper c bindings
 cd "$ROOT/zookeeper/src/c" || exit
 export CFLAGS="-Wno-error" # Don't worry about it~ just a bug in GCC 8.2
+libtoolize --force
+aclocal
+autoheader
+automake --force-missing --add-missing
+autoconf
 ./configure
 make -j 2
 make install
