@@ -75,7 +75,7 @@ if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
 fi
 
 # Set locale if not properly set
-if [ ! $(cat /etc/locale.gen | grep "#en_US.UTF8 UTF8") ]; then
+if [ ! "$(cat /etc/locale.gen | grep "#en_US.UTF8 UTF8")" ]; then
   sudo rm /etc/locale.gen
   echo "en_US.UTF-8 UTF-8" | sudo tee /etc/locale.gen
   sudo locale-gen
