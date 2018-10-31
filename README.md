@@ -45,7 +45,7 @@ After setting up a fresh image of manjaro-17 a few commands need to be executed 
 ```
 sudo -s
 pacman -Syu
-pacman-mirrors -g
+pacman-mirrors -f0
 pacman -Sy archlinux-keyring manjaro-keyring
 pacman-key --refresh-key
 pacman -S gcc git wget htop make icu base-devel python jdk8-openjdk ant cppunit doxygen

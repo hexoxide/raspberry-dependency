@@ -110,6 +110,7 @@ fi
 
 # Update reference to image
 RASPBIAN_IMAGE="$(echo ./*raspbian*)"
+
 # retrieve image information
 RAW_INFO="$(fdisk -l "$RASPBIAN_IMAGE")"
 
