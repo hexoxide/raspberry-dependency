@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #     Raspberry Dependencies installation and management for 02 software experiments.
 #     Copyright (C) 2018 Amsterdam University of Applied Sciences.
 
@@ -51,6 +50,16 @@ function verifyNetwork() {
   fi
 }
 
+function verifyRequirement() {
+  if hash "$i" 2>/dev/null; then
+    echo >&2 "Found ${i}";
+    return 0
+  else
+    echo >&2 "Could not find: ${i} , is not installed.";
+    return 1;
+  fi
+}
+
 ##############################
 ## end Function Definitions ##
 ##############################
@@ -58,12 +67,7 @@ function verifyNetwork() {
 # verify existence of requirements
 echo "verifying requirements..."; 
 for i in "${REQUIRE[@]}" 
-  do if hash "$i" 2>/dev/null; then
-    echo >&2 "Found ${i}";
-  else
-    echo >&2 "Could not find: ${i} , is not installed.";
-    exit 1;
-  fi
+  do verifyRequirement "$i" || exit 1
 done
 
 echo "Full path was determined to be: $ROOT"
@@ -75,7 +79,7 @@ if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
 fi
 
 # Set locale if not properly set
-if [ ! "$(cat /etc/locale.gen | grep "#en_US.UTF8 UTF8")" ]; then
+if ! grep -q "#en_US.UTF8 UTF8" /etc/locale.gen; then
   sudo rm /etc/locale.gen
   echo "en_US.UTF-8 UTF-8" | sudo tee /etc/locale.gen
   sudo locale-gen
@@ -88,6 +92,7 @@ cd "$ROOT" || exit
 # Copy cppunit.m4 into aclocal folder if it does not already exist
 # this file is required by zookeeper.
 if [ -f /usr/share/aclocal/cppunit.m4 ]; then
+  echo "Copying cppunit.m4"
   sudo cp cppunit.m4 /usr/share/aclocal/
 fi
 
@@ -98,83 +103,90 @@ if [ ! "$TRAVIS" ]; then
 fi
 
 # Compile and install cmake
-cd "$ROOT/cmake" || exit
-./bootstrap
-make -j 4
-sudo make install
+if ! verifyRequirement "cmake"; then
+  cd "$ROOT/cmake" || exit
+  ./bootstrap
+  make -j 2
+  sudo make install
+fi
 
 # Compile and install boost
-cd "$ROOT/boost" || exit
-./bootstrap.sh --prefix=/usr/local
-sudo ./b2 install
-
-sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
-sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
-sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
-sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
-sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
-sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
-sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
-sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
-sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
-sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
-sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
-sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
+# cd "$ROOT/boost" || exit
+# ./bootstrap.sh
+# sudo ./b2 install
+# sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
+# sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
+# sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
+# sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
+# sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
+# sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
+# sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
+# sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
+# sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
+# sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
+# sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
+# sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
 
 # Compile and install yaml-cpp
-cd "$ROOT/yaml-cpp" || exit
-if [ -d "build" ]; then
-  mkdir build
-fi
-cd build || exit
-cmake ../
-make -j 4
-sudo make install
+# cd "$ROOT/yaml-cpp" || exit
+# if [ -d "build" ]; then
+#   mkdir build
+# fi
+# cd build || exit
+# cmake ../
+# make -j 4
+# sudo make install
 
 # Compile and install libzmq
-cd "$ROOT/libzmq" || exit
-if [ -d "build" ]; then
-  mkdir build
+if [ ! -f "/usr/local/lib/libzmq.so" ]; then
+  cd "$ROOT/libzmq" || exit
+  if [ -d "build" ]; then
+    mkdir build
+  fi
+  cd build || exit
+  cmake ../
+  make -j 2
+  sudo make install
 fi
-cd build || exit
-cmake ../
-make -j 4
-sudo make install
 
 # Compile and install FairLogger
-cd "$ROOT/FairLogger" || exit
-if [ -d "build" ]; then
-  mkdir build
+if [ ! -f "/usr/local/lib/libFairLogger.so" ]; then
+  cd "$ROOT/FairLogger" || exit
+  if [ -d "build" ]; then
+    mkdir build
+  fi
+  cd build || exit
+  cmake ../
+  make -j 2
+  sudo make install
 fi
-cd build || exit
-cmake ../
-make -j 4
-sudo make install
 
 # Compile and install FairMQ
-cd "$ROOT/FairMQ" || exit
-if [ -d "build" ]; then
-  mkdir build
+if [ ! -f "/usr/local/lib/libFairMQ.so" ]; then
+  cd "$ROOT/FairMQ" || exit
+  if [ -d "build" ]; then
+    mkdir build
+  fi
+  cd build || exit
+  cmake -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
+  make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
+  sudo make install
 fi
-cd build || exit
-cmake -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
-make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
-sudo make install
 
 # Compile and install ZooKeeper
-cd "$ROOT/zookeeper-arch" || exit
-makepkg -Acs
-PACKAGE="$(echo ./*.pkg.tar.xz)"
-sudo pacman -U "$PACKAGE"
+#cd "$ROOT/zookeeper-arch" || exit
+#makepkg -Acs
+#PACKAGE="$(echo ./*.pkg.tar.xz)"
+#sudo pacman -U "$PACKAGE"
 
 # Compile and install ZooKeeper c bindings
-cd "$ROOT/zookeeper/src/c" || exit
-export CFLAGS="-Wno-error" # Don't worry about it~ just a bug in GCC 8.2
-libtoolize --force
-aclocal
-autoheader
-automake --force-missing --add-missing
-autoconf
-./configure
-make -j 2
-make install
+# cd "$ROOT/zookeeper/src/c" || exit
+# export CFLAGS="-Wno-error" # Don't worry about it~ just a bug in GCC 8.2
+# libtoolize --force
+# aclocal
+# autoheader
+# automake --force-missing --add-missing
+# autoconf
+# ./configure
+# make -j 2
+# make install
