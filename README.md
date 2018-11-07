@@ -12,7 +12,7 @@ The following tools will be installed by using this tool.
 | [Zookeeper](https://zookeeper.apache.org/)              	| 3.4.9      			| 3.4.9				|
 | [Cmake](https://github.com/Kitware/CMake)               	| 3.11.0     			| 3.11.0			|
 | [Boost](https://www.boost.org/)                         	| 1.62.0*    			| 1.66.0			|
-| [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          	| 0.5.2      			| 0.5.2				|
+| [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          	| 0.6.2*     			| 0.5.2				|
 | [FairLogger](https://github.com/FairRootGroup/FairLogger)	| 1.0.6					| _NONE_			|
 | [Compiler](https://gcc.gnu.org/)                        	| gcc 6.3.0  			| gcc 6.3.0 		|
 

@@ -128,14 +128,16 @@ fi
 # sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
 
 # Compile and install yaml-cpp
-# cd "$ROOT/yaml-cpp" || exit
-# if [ -d "build" ]; then
-#   mkdir build
-# fi
-# cd build || exit
-# cmake ../
-# make -j 4
-# sudo make install
+if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
+  cd "$ROOT/yaml-cpp" || exit
+  if [ -d "build" ]; then
+    mkdir build
+  fi
+  cd build || exit
+  cmake -DBUILD_SHARED_LIBS=ON ../
+  make -j 4
+  sudo make install
+fi
 
 # Compile and install libzmq
 if [ ! -f "/usr/local/lib/libzmq.so" ]; then
