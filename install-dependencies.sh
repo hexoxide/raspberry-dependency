@@ -103,7 +103,7 @@ if [ ! "$TRAVIS" ]; then
 fi
 
 # Compile and install cmake
-if ! verifyRequirement "cmake"; then
+if verifyRequirement "cmake"; then
   cd "$ROOT/cmake" || exit
   ./bootstrap
   make -j 2
