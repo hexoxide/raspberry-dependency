@@ -130,7 +130,7 @@ fi
 # Compile and install yaml-cpp
 if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
   cd "$ROOT/yaml-cpp" || exit
-  if [ -d "build" ]; then
+  if [ ! -d "build" ]; then
     mkdir build
   fi
   cd build || exit
@@ -142,7 +142,7 @@ fi
 # Compile and install libzmq
 if [ ! -f "/usr/local/lib/libzmq.so" ]; then
   cd "$ROOT/libzmq" || exit
-  if [ -d "build" ]; then
+  if [ ! -d "build" ]; then
     mkdir build
   fi
   cd build || exit
@@ -154,7 +154,7 @@ fi
 # Compile and install FairLogger
 if [ ! -f "/usr/local/lib/libFairLogger.so" ]; then
   cd "$ROOT/FairLogger" || exit
-  if [ -d "build" ]; then
+  if [ ! -d "build" ]; then
     mkdir build
   fi
   cd build || exit
@@ -166,7 +166,7 @@ fi
 # Compile and install FairMQ
 if [ ! -f "/usr/local/lib/libFairMQ.so" ]; then
   cd "$ROOT/FairMQ" || exit
-  if [ -d "build" ]; then
+  if [ ! -d "build" ]; then
     mkdir build
   fi
   cd build || exit
