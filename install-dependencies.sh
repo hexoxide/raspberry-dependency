@@ -21,6 +21,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # List of commands required for execution of the setup script 
 REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" "hash" "dirname" "pwd" "ln" "cp" "doxygen")
 
+BOOST_VERSION="1_66"
+
 ################################
 ## Start Function Definitions ##
 ################################
@@ -79,8 +81,7 @@ if [ -d /usr/include/python3.7m/ ] && [ ! -d /usr/include/python3.7/ ]; then
 fi
 
 # Set locale if not properly set
-if ! grep -q "#en_US.UTF8 UTF8" /etc/locale.gen; then
-  sudo rm /etc/locale.gen
+if ! grep -q "en_US" /etc/locale.gen; then
   echo "en_US.UTF-8 UTF-8" | sudo tee /etc/locale.gen
   sudo locale-gen
 fi
@@ -103,7 +104,7 @@ if [ ! "$TRAVIS" ]; then
 fi
 
 # Compile and install cmake
-if verifyRequirement "cmake"; then
+if ! verifyRequirement "cmake"; then
   cd "$ROOT/cmake" || exit
   ./bootstrap
   make -j 2
@@ -111,21 +112,23 @@ if verifyRequirement "cmake"; then
 fi
 
 # Compile and install boost
-cd "$ROOT/boost" || exit
-./bootstrap.sh
-sudo ./b2 install
-sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
-sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
-sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
-sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
-sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
-sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
-sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
-sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
-sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
-sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
-sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
-sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
+if grep -q $BOOST_VERSION /usr/local/include/boost/version.hpp; then
+  cd "$ROOT/boost" || exit
+  ./bootstrap.sh
+  sudo ./b2 install
+  sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
+  sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
+  sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
+  sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
+  sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
+  sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
+  sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
+  sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
+  sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
+  sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
+  sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
+  sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
+fi
 
 # Compile and install yaml-cpp
 if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
@@ -135,7 +138,7 @@ if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
   fi
   cd build || exit
   cmake -DBUILD_SHARED_LIBS=ON ../
-  make -j 4
+  make -j 2
   sudo make install
 fi
 
