@@ -51,12 +51,12 @@ function verifyNetwork() {
 }
 
 function verifyRequirement() {
-  if hash "$i" 2>/dev/null; then
-    echo >&2 "Found ${i}";
+  if hash "$1" 2>/dev/null; then
+    echo >&2 "Found $1";
     return 0
   else
-    echo >&2 "Could not find: ${i} , is not installed.";
-    return 1;
+    echo >&2 "Could not find: $1 , is not installed.";
+    return 1
   fi
 }
 
@@ -91,7 +91,7 @@ cd "$ROOT" || exit
 
 # Copy cppunit.m4 into aclocal folder if it does not already exist
 # this file is required by zookeeper.
-if [ -f /usr/share/aclocal/cppunit.m4 ]; then
+if [ ! -f "/usr/share/aclocal/cppunit.m4" ]; then
   echo "Copying cppunit.m4"
   sudo cp cppunit.m4 /usr/share/aclocal/
 fi
