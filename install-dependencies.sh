@@ -112,9 +112,10 @@ if ! verifyRequirement "cmake"; then
 fi
 
 # Compile and install boost
-if grep -q $BOOST_VERSION /usr/local/include/boost/version.hpp; then
+if [ ! -f "/usr/local/include/boos/version.hpp" ] || ! grep -q $BOOST_VERSION /usr/local/include/boost/version.hpp; then
   cd "$ROOT/boost" || exit
   ./bootstrap.sh
+  ./b2
   sudo ./b2 install
   sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
   sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
