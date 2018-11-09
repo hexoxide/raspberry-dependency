@@ -111,21 +111,21 @@ if verifyRequirement "cmake"; then
 fi
 
 # Compile and install boost
-# cd "$ROOT/boost" || exit
-# ./bootstrap.sh
-# sudo ./b2 install
-# sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
-# sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
-# sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
-# sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
-# sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
-# sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
-# sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
-# sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
-# sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
-# sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
-# sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
-# sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
+cd "$ROOT/boost" || exit
+./bootstrap.sh
+sudo ./b2 install
+sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
+sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
+sudo cp libs/process/include/boost/process.hpp /usr/local/include/boost/
+sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
+sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
+sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
+sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
+sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
+sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
+sudo cp -R libs/msm/include/boost/msm/ /usr/local/include/boost/
+sudo cp -R libs/dll/include/boost/dll /usr/local/include/boost/
+sudo cp -R libs/core/include/boost/utility/ /usr/local/include/boost/
 
 # Compile and install yaml-cpp
 if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then

@@ -46,7 +46,8 @@ Before continuing install the following dependencies using aptitude by executing
 su root
 apt update
 apt upgrade
-apt install sudo gcc git wget htop make icu-devtools python ant libcppunit-dev doxygen automake autoconf libtool zookeeper libzookeeper-mt-dev
+apt install sudo gcc git wget htop make icu-devtools python ant libcppunit-dev 
+apt install doxygen automake autoconf libtool zookeeper libzookeeper-mt-dev
 ```
 
 Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. Execute the code below to set a unique hostname for the node(Change the HOSTNAME value).
