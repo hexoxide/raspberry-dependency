@@ -11,7 +11,7 @@ The following tools will be installed by using this tool.
 | [ZeroMQ](https://github.com/zeromq/libzmq)              	| 4.2.2*     			| 4.2.1				|
 | [Zookeeper](https://zookeeper.apache.org/)              	| 3.4.9      			| 3.4.9				|
 | [Cmake](https://github.com/Kitware/CMake)               	| 3.11.0     			| 3.11.0			|
-| [Boost](https://www.boost.org/)                         	| 1.62.0*    			| 1.66.0			|
+| [Boost](https://www.boost.org/)                         	| 1.66.0     			| 1.66.0			|
 | [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          	| 0.6.2*     			| 0.5.2				|
 | [FairLogger](https://github.com/FairRootGroup/FairLogger)	| 1.0.6					| _NONE_			|
 | [Compiler](https://gcc.gnu.org/)                        	| gcc 6.3.0  			| gcc 6.3.0 		|
@@ -53,8 +53,8 @@ apt install doxygen automake autoconf libtool zookeeper libzookeeper-mt-dev
 Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. Execute the code below to set a unique hostname for the node(Change the HOSTNAME value).
 
 ```
-su root
-HOSTNAME="manjaro-arm-1"
+sudo -s
+HOSTNAME="raspbian-arm-1"
 echo "$HOSTNAME" > /etc/hostname
 echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
 ```
