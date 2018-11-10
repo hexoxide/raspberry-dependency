@@ -59,6 +59,16 @@ echo "$HOSTNAME" > /etc/hostname
 echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
 ```
 
+### Setup DHCP on control node
+
+```
+sudo -s
+systemctl stop dhcpd.service
+systemctl stop dnsmasq.service
+ip address add 10.42.0.1/24 dev eth1
+dnsmasq --conf-file=/dev/null --no-hosts --keep-in-foreground --bind-interfaces --except-interface=lo --clear-on-reload --strict-order --listen-address=10.42.0.1 --dhcp-range=10.42.0.10,10.42.0.254,60m --dhcp-lease-max=50
+```
+
 ## 3. Emulating raspberry-pi hardware
 
 `qemu-system-aarch64 -M raspi3 -m 1024 -kernel kernel8.img -dtb bcm2837-rpi-3-b.dtb -serial stdio -drive file=qemu-rasp/2018-06-27-raspbian-stretch-lite.img,format=raw,if=sd -append "console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait"`
