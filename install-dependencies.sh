@@ -114,10 +114,10 @@ if ! verifyRequirement "cmake"; then
 fi
 
 # Compile and install boost
-if [ ! -f "/usr/local/include/boos/version.hpp" ] || ! grep -q $BOOST_VERSION /usr/local/include/boost/version.hpp; then
+if [ ! -f "/usr/local/include/boost/version.hpp" ] || ! grep -q $BOOST_VERSION /usr/local/include/boost/version.hpp; then
   cd "$ROOT/boost" || exit
   ./bootstrap.sh
-  ./b2
+  ./b2 
   sudo ./b2 install
   sudo cp libs/program_options/include/boost/program_options.hpp /usr/local/include/boost/
   sudo cp libs/signals/include/boost/signals.hpp /usr/local/include/boost/
@@ -126,6 +126,7 @@ if [ ! -f "/usr/local/include/boos/version.hpp" ] || ! grep -q $BOOST_VERSION /u
   sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
   sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
   sudo cp libs/filesystem/include/boost/filesystem.hpp /usr/local/include/boost/
+  sudo cp libs/format/include/boost/format.hpp /usr/local/include/boost/
   sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
   sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
   sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
