@@ -1,4 +1,4 @@
-![](https://travis-ci.com/hexoxide/raspberry-dependency.svg?branch=master)
+![https://travis-ci.com/hexoxide/raspberry-dependency](https://travis-ci.com/hexoxide/raspberry-dependency.svg?branch=master)
 
 # raspberry-dependency
 Automatic dependency installation and management for the raspberry pi 3 B+. This project will setup the necessary tools to run experiments related to the CERN O2-balancer. O2-balancer experiments are used to determine feasible network load-balancing algorithms which will be required after the upgrade to ALICE. ALICE will be upgraded during LS2 which is due to finish February 2021.
