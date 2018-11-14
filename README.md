@@ -36,12 +36,11 @@ A raspberry-pi model 3 B+ is required with the appropriate operating system imag
 * Raspbian stretch lite
 
 ### 1.1 Reasons for choosing Raspbian as Linux distribution
-
 An environment as similar as possible to the one used at CERN is desired, however, it has proven to be unfeasible to use CentOS. This is due to the limitations the Raspberry pi version has in comparison to the CentOS x86_64 image. One of the main reasons is the inability to switch of gcc version, normally, a tool called `scl` provides the switching for specific versions of many development tools. The version of gcc supplied with CentOS is incompatible with the version of boost that is specified in many of the previous experiments. Furthermore the version of gcc is not capable of compiling c++2011 features which is required by CERN. To continue to use CentOS gcc would have been required to be build from source.
 
 ## 2. Setup
-
 Before continuing install the following dependencies using aptitude by executing the commands below:
+
 ```
 su root
 apt update
@@ -50,7 +49,10 @@ apt install sudo gcc git wget htop make icu-devtools python ant libcppunit-dev
 apt install doxygen automake autoconf libtool zookeeper libzookeeper-mt-dev
 ```
 
-Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. Execute the code below to set a unique hostname for the node(Change the HOSTNAME value).
+Afterwards execute the `install-dependencies.sh` script to perform the entire setup operation. The entire process can take up to 4 hours to complete. 
+
+## 2.1 Setup unique hostnames for nodes
+Execute the code below to set a unique hostname for the node(Change the HOSTNAME value). This code will also change the SSH banner.
 
 ```
 sudo -s
@@ -59,7 +61,8 @@ echo "$HOSTNAME" > /etc/hostname
 echo -e "CERN loadbalancing pi \nHostname: $HOSTNAME" > /etc/motd
 ```
 
-### Setup DHCP on control node
+### 2.2 Setup DHCP on control node
+The DHCP server is run on the usb network interface so that auxiliary network traffic can be transfered over it without interfering with experiments.
 
 ```
 sudo -s

@@ -179,6 +179,8 @@ if [ ! -f "/usr/local/lib/libFairMQ.so" ]; then
   sudo make install
 fi
 
+cd "$ROOT" || exit
+
 # Compile and install ZooKeeper
 #cd "$ROOT/zookeeper-arch" || exit
 #makepkg -Acs
