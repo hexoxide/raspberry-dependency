@@ -125,6 +125,7 @@ if [ ! -f "/usr/local/include/boos/version.hpp" ] || ! grep -q $BOOST_VERSION /u
   sudo cp libs/signals2/include/boost/signals2.hpp /usr/local/include/boost/
   sudo cp libs/parameter/include/boost/parameter.hpp /usr/local/include/boost/
   sudo cp libs/iterator/include/boost/function_output_iterator.hpp /usr/local/include/boost/
+  sudo cp libs/filesystem/include/boost/filesystem.hpp /usr/local/include/boost/
   sudo cp -R libs/signals2/include/boost/signals2/ /usr/local/include/boost/
   sudo cp -R libs/process/include/boost/process/ /usr/local/include/boost/
   sudo cp -R libs/uuid/include/boost/uuid/ /usr/local/include/boost/
