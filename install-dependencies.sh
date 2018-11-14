@@ -86,7 +86,9 @@ if ! grep -q "en_US" /etc/locale.gen; then
   sudo locale-gen
 fi
 
-verifyNetwork
+if [ ! "$TRAVIS" ]; then
+  verifyNetwork
+fi
 
 cd "$ROOT" || exit
 
