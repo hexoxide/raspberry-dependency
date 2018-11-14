@@ -45,7 +45,7 @@ Before continuing install the following dependencies using aptitude by executing
 su root
 apt update
 apt upgrade
-apt install sudo gcc git wget htop make icu-devtools python ant libcppunit-dev 
+apt install sudo gcc git wget htop make icu-devtools python python-dev ant libcppunit-dev 
 apt install doxygen automake autoconf libtool zookeeper libzookeeper-mt-dev
 ```
 
