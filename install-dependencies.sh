@@ -23,6 +23,13 @@ REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" 
 
 BOOST_VERSION="1_66"
 
+DEBUG=true
+CMAKE_PARAMATERS=""
+
+if $($DEBUG); then
+  CMAKE_PARAMATERS="-DCMAKE_BUILD_TYPE=Debug"
+fi
+
 ################################
 ## Start Function Definitions ##
 ################################
@@ -154,7 +161,7 @@ if [ ! -f "/usr/local/lib/libzmq.so" ]; then
     mkdir build
   fi
   cd build || exit
-  cmake ../
+  cmake $CMAKE_PARAMATERS ../
   make -j 2
   sudo make install
 fi
@@ -166,7 +173,7 @@ if [ ! -f "/usr/local/lib/libFairLogger.so" ]; then
     mkdir build
   fi
   cd build || exit
-  cmake ../
+  cmake $CMAKE_PARAMATERS ../
   make -j 2
   sudo make install
 fi
@@ -178,7 +185,7 @@ if [ ! -f "/usr/local/lib/libFairMQ.so" ]; then
     mkdir build
   fi
   cd build || exit
-  cmake -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
+  cmake $CMAKE_PARAMATERS -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
   make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
   sudo make install
 fi
