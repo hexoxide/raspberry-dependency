@@ -7,13 +7,13 @@ The following tools will be installed by using this tool.
   
 | Library/Tool                                            	| Version required 		| Version specified	|
 |-----------------------------------------------------------|-----------------------|-------------------|
-| [FairMQ](https://github.com/FairRootGroup/FairMQ)       	| 1.1.5      			| 1.1.5				|
-| [ZeroMQ](https://github.com/zeromq/libzmq)              	| 4.2.2*     			| 4.2.1				|
+| [FairMQ](https://github.com/FairRootGroup/FairMQ)       	| 1.3.6*     			| 1.1.5				|
+| [ZeroMQ](https://github.com/zeromq/libzmq)              	| 4.2.5*     			| 4.2.1				|
 | [Zookeeper](https://zookeeper.apache.org/)              	| 3.4.9      			| 3.4.9				|
-| [Cmake](https://github.com/Kitware/CMake)               	| 3.11.0     			| 3.11.0			|
-| [Boost](https://www.boost.org/)                         	| 1.66.0     			| 1.66.0			|
+| [Cmake](https://github.com/Kitware/CMake)               	| 3.12.4*    			| 3.11.0			|
+| [Boost](https://www.boost.org/)                         	| 1.68.0*    			| 1.66.0			|
 | [Yaml-cpp](https://github.com/jbeder/yaml-cpp)          	| 0.6.2*     			| 0.5.2				|
-| [FairLogger](https://github.com/FairRootGroup/FairLogger)	| 1.0.6					| _NONE_			|
+| [FairLogger](https://github.com/FairRootGroup/FairLogger)	| 1.3.0*				| _NONE_			|
 | [Compiler](https://gcc.gnu.org/)                        	| gcc 6.3.0  			| gcc 6.3.0 		|
 
 _*Version differs from specification as defined in Mitch Puls his paper._
