@@ -26,7 +26,7 @@ BOOST_VERSION="1_66"
 DEBUG=true
 CMAKE_PARAMATERS=""
 
-if $($DEBUG); then
+if [ ! "$DEBUG" ]; then
   CMAKE_PARAMATERS="-DCMAKE_BUILD_TYPE=Debug"
 fi
 
@@ -149,7 +149,7 @@ if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
     mkdir build
   fi
   cd build || exit
-  cmake -DBUILD_SHARED_LIBS=ON ../
+  cmake $CMAKE_PARAMATERS -DBUILD_SHARED_LIBS=ON ../
   make -j 2
   sudo make install
 fi
