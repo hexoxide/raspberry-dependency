@@ -21,13 +21,19 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # List of commands required for execution of the setup script 
 REQUIRE=("git" "wget" "gcc" "g++" "make" "python" "icuinfo" "ping" "grep" "cut" "hash" "dirname" "pwd" "ln" "cp" "doxygen")
 
-BOOST_VERSION="1_66"
+BOOST_VERSION="1_68"
 
 DEBUG=true
 CMAKE_PARAMATERS=""
-
 if [ ! "$DEBUG" ]; then
   CMAKE_PARAMATERS="-DCMAKE_BUILD_TYPE=Debug"
+fi
+
+NUM_THREADS=""
+if [ ! "$TRAVIS" ]; then
+  NUM_THREADS=1
+else
+  NUM_THREADS=4
 fi
 
 ################################
@@ -116,7 +122,7 @@ fi
 if ! verifyRequirement "cmake"; then
   cd "$ROOT/cmake" || exit
   ./bootstrap
-  make -j 2
+  make -j $NUM_THREADS
   sudo make install
 fi
 
@@ -150,7 +156,7 @@ if [ ! -f "/usr/local/lib/libyaml-cpp.so" ]; then
   fi
   cd build || exit
   cmake $CMAKE_PARAMATERS -DBUILD_SHARED_LIBS=ON ../
-  make -j 2
+  make -j $NUM_THREADS
   sudo make install
 fi
 
@@ -162,7 +168,7 @@ if [ ! -f "/usr/local/lib/libzmq.so" ]; then
   fi
   cd build || exit
   cmake $CMAKE_PARAMATERS ../
-  make -j 2
+  make -j $NUM_THREADS
   sudo make install
 fi
 
@@ -174,7 +180,7 @@ if [ ! -f "/usr/local/lib/libFairLogger.so" ]; then
   fi
   cd build || exit
   cmake $CMAKE_PARAMATERS ../
-  make -j 2
+  make -j $NUM_THREADS
   sudo make install
 fi
 
@@ -186,7 +192,7 @@ if [ ! -f "/usr/local/lib/libFairMQ.so" ]; then
   fi
   cd build || exit
   cmake $CMAKE_PARAMATERS -DBUILD_TESTING=0 ../ # Do not build unit tests as it requires GTest as dependency
-  make -j 1 # Device will run out of memory if more then 1 compile job runs in parallel!
+  make -j $NUM_THREADS # Device will run out of memory if more then 1 compile job runs in parallel!
   sudo make install
 fi
 
